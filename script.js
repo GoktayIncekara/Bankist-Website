@@ -135,7 +135,8 @@ navLinks.addEventListener('mouseover', handleHover.bind(0.5));
 navLinks.addEventListener('mouseout', handleHover.bind(1));
 
 //Sticky Nav
-const initialCoords = nav.getBoundingClientRect();
+//Bad practice
+/* const initialCoords = nav.getBoundingClientRect();
 
 window.addEventListener('scroll', function () {
   if (this.window.scrollY > initialCoords.top) {
@@ -143,4 +144,20 @@ window.addEventListener('scroll', function () {
   } else {
     nav.classList.remove('sticky');
   }
-});
+}); */
+const navHeight = nav.getBoundingClientRect().height;
+
+const obsCallback = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.toggle('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const obsOptions = {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+};
+
+const navObserver = new IntersectionObserver(obsCallback, obsOptions);
+navObserver.observe(header);
