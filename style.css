@@ -376,8 +376,6 @@ h4 {
   height: 50rem;
   margin: 0 auto;
   position: relative;
-
-  /* IN THE END */
   overflow: hidden;
 }
 
@@ -456,7 +454,6 @@ h4 {
 }
 
 .dots__dot--active {
-  /* background-color: #fff; */
   background-color: #888;
   opacity: 1;
 }
