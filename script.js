@@ -13,6 +13,8 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
 const navLinks = document.querySelector('.nav__links');
+const sections = document.querySelectorAll('.section');
+const images = document.querySelectorAll('.features__img');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -161,3 +163,52 @@ const obsOptions = {
 
 const navObserver = new IntersectionObserver(obsCallback, obsOptions);
 navObserver.observe(header);
+
+//To slide the sections
+const sectionsCallback = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const sectionsOptions = {
+  root: null,
+  threshold: 0.3,
+};
+
+const sectionsObserver = new IntersectionObserver(
+  sectionsCallback,
+  sectionsOptions
+);
+
+sections.forEach(section => {
+  sectionsObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+
+//Lazy load the images
+const imagesCallback = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+
+  /* const src = entry.target.dataset.src;
+  entry.target.setAttribute("src", src); */
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const imagesOptions = {
+  root: null,
+  threshold: 0.3,
+};
+
+const imagesObserver = new IntersectionObserver(imagesCallback, imagesOptions);
+images.forEach(image => {
+  imagesObserver.observe(image);
+});
